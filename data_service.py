@@ -23,32 +23,29 @@ def create_db_file():
     return DB_FILE
 
 #--------------------Manejo de db para los valores de las series--------------------
-def create_values_db(name):
-    id = create_id(name)
+def create_values_db():
     conn = sqlite3.connect(create_db_file())
     cursor = conn.cursor()
-    cursor.execute(f''' CREATE TABLE IF NOT EXISTS {id} (
-                  entrance INTEGER PRIMARY KEY,
-                  value FLOAT,
+    cursor.execute(f''' CREATE TABLE IF NOT EXISTS values_db (
+                  serie_id INTEGER PRIMARY KEY,
+                  value FLOAT NOT NULL,
                   date DATE NOT NULL
         )''')
     conn.commit()
     conn.close()
 
-    return id
-
 def delete_values_db(name):
-    serie_id = create_id(name)
+    serie_id = create_id(name, is_group=False)
     conn = sqlite3.connect(create_db_file())
     cursor = conn.cursor()
-    cursor.execute(f''' DROP TABLE IF EXISTS {serie_id}''')
+    cursor.execute(f"DELETE FROM values_db WHERE serie_id = ?", (serie_id,))
     conn.commit()
     conn.close()
 
 def clear_last_values(serie_id, days_range):
     conn = sqlite3.connect(create_db_file())
     cursor = conn.cursor()
-    cursor.execute(f"DELETE FROM {serie_id} WHERE date < date('now', '-{days_range} days')")
+    cursor.execute(f"DELETE FROM values_db WHERE serie_id = ? AND date < date('now', '-{days_range} days')", (serie_id,))
     conn.commit()
     conn.close()
 
@@ -56,7 +53,7 @@ def give_values_to_serie(serie_id, value):
     today = datetime.now()
     conn = sqlite3.connect(create_db_file())
     cursor = conn.cursor()
-    cursor.execute(f"INSERT INTO {serie_id} (value, date) VALUES (?, ?)", (value, today))
+    cursor.execute(f"INSERT INTO values_db (serie_id, value, date) VALUES (?, ?, ?)", (serie_id, value, today))
     conn.commit()
     conn.close()
 
@@ -66,10 +63,11 @@ def create_serie_db():
     conn = sqlite3.connect(create_db_file())
     cursor = conn.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS series_data (
-                   id TEXT NOT NULL,
+                   serie_id TEXT NOT NULL,
                    name TEXT NOT NULL UNIQUE,
                    group_name TEXT,
-                   birth_date DATE NOT NULL
+                   birth_date DATE NOT NULL,
+                   total_ignore BOOLEAN DEFAULT 0
         )''')
     conn.commit()
     conn.close()
@@ -80,7 +78,7 @@ def create_serie_group():
     conn = sqlite3.connect(create_db_file())
     cursor = conn.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS groups (
-        id TEXT NOT NULL,
+        group_id TEXT NOT NULL,
         group_name TEXT NOT NULL UNIQUE,
         birth_date DATE NOT NULL,
         group_reason TEXT
@@ -96,7 +94,8 @@ def create_serie(name, group=None):
     serie_id = create_id(name, is_group=False)
     conn = sqlite3.connect(create_db_file())
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO series_data (id, name, group_name, birth_date) VALUES (?, ?, ?, ?)", (serie_id, name, group, datetime.now()))
+    cursor.execute("INSERT INTO series_data (serie_id, name, group_name, birth_date, total_ignore) VALUES (?, ?, ?, ?, ?)", (serie_id, name, group, datetime.now(), False))
     conn.commit()
     conn.close()
-    create_values_db(name)
+    create_values_db()
+    return serie_id
