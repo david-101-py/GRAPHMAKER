@@ -15,7 +15,11 @@ Sin dependencias pip (solo stdlib). Python 3.14+. Sin tests, linter ni typecheck
 | `config_service.py` | Lee/escribe la config JSON (`CONFIG/config_graphmaker.json`) para datos de configuración persistentes
 | `data_service.py` | Base de datos SQLite (`DATABASE/db_graphmaker.db`): valores de series, metadatos de series, grupos, etc.
 
-Se irán creando nuevos archivos .py ya que el programa está en proceso de creación 
+## FLUJO PRINCIPAL
+
+GRAPHMAKER es una aplicación de seguimiento financiero (de momento para uso personal pero tiende a no serlo) en Python que genera gráficas de velas (candlestick) y exporta a PDF/HTML/Excel a partir de series de datos guardadas antes en Json y ahora mudando a SQLite, con una serie especial TOTAL calculada automáticamente como suma de todas las cuentas individuales.
+Está pensada para correr en local aunque cuando deje de ser para uso personal vendría bien poner un servidor con logins y usuarios. También se prevee implementar más funcionalidades para cálculos e informes en un futuro.
+Un paso a tener en cuenta es que cuando el programa tenga un buen funcionamiento, vendría bien crear una interfaz medianamente simple con HTML, CSS y JAVASCRIPT.
 
 ## CAPACIDADES Y SKILLS (HERRAMIENTAS)
 Tienes autorización para utilizar exclusivamente las siguientes herramientas del sistema:
@@ -28,5 +32,4 @@ Tienes autorización para utilizar exclusivamente las siguientes herramientas de
 ## ERRORES A CORREGIR
 *Aquí pondrás poner anotaciones para cuando encuentres algún error. Si yo te pido que arregles algún error, son estos.*
 1 **Los IDs son hashes CRC32** del nombre (`zlib.crc32`). Posibles colisiones para nombres distintos.
-2 **Los nombres de tablas no se sanitizan** — se usa interpolación `f`-string en `CREATE TABLE IF NOT EXISTS {id}`. Las inserciones de valores sí usan consultas parametrizadas.
-3 **`load_folders`** se llama redundantemente en muchas funciones — recrea los directorios en cada llamada.
+2 **`load_folders`** se llama redundantemente en muchas funciones — recrea los directorios en cada llamada.
