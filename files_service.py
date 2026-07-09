@@ -11,12 +11,14 @@ def load_folders():
         FOLDER_INPUTS = BASE_DIR / "INPUTS FOLDER"
         FOLDER_DATA = BASE_DIR / "DATABASE"
         FOLDER_CONFIG = BASE_DIR / "CONFIG"
+        FOLDER_HISTORY = BASE_DIR / "HISTORY"
 
         # Crear carpetas base
         create_path_if_exists(FOLDER_EXPORTS, is_file=False)
         create_path_if_exists(FOLDER_INPUTS, is_file=False)
         create_path_if_exists(FOLDER_DATA, is_file=False)
         create_path_if_exists(FOLDER_CONFIG, is_file=False)
+        create_path_if_exists(FOLDER_HISTORY, is_file=False)
 
         # Subcarpetas
         GRAPH_DIR = FOLDER_EXPORTS / "graficas"
@@ -43,7 +45,8 @@ def load_folders():
             "GRAPH_DIR": GRAPH_DIR,
             "TABLE_DIR": TABLE_DIR,
             "HTML_GRAPH_DIR": HTML_GRAPH_DIR,
-            "UNDO_STACK": UNDO_STACK
+            "UNDO_STACK": UNDO_STACK,
+            "FOLDER_HISTORY": FOLDER_HISTORY 
         }
         return folders
     else:

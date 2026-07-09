@@ -1,13 +1,13 @@
 import json
-
-from files_service import create_path_if_exists, load_folders
+from pathlib import Path
 
 def create_config():
-    folders = load_folders()
-    BASE_DIR = folders["BASE_DIR"]
-    FOLDER_CONFIG = folders["FOLDER_CONFIG"]
-    CONFIG_FILE = BASE_DIR / FOLDER_CONFIG / "config_graphmaker.json"
-    create_path_if_exists(CONFIG_FILE, is_file=True)
+    BASE_DIR = Path(__file__).resolve().parent
+    FOLDER_CONFIG = BASE_DIR / "CONFIG"
+    FOLDER_CONFIG.mkdir(parents=True, exist_ok=True)
+    CONFIG_FILE = FOLDER_CONFIG / "config_graphmaker.json"
+    if not CONFIG_FILE.exists():
+        CONFIG_FILE.touch()
     return CONFIG_FILE
 
 def load_config():
