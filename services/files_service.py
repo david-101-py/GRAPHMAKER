@@ -1,11 +1,11 @@
 from pathlib import Path
 import datetime
-from config_service import load_config
+from services.config_service import load_config
 
 def load_folders():       
     try:
 
-        BASE_DIR = Path(__file__).resolve().parent
+        BASE_DIR = Path(__file__).resolve().parent.parent
 
         FOLDER_EXPORTS = BASE_DIR / "EXPORTS"
         FOLDER_INPUTS = BASE_DIR / "INPUTS FOLDER"

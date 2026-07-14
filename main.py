@@ -1,7 +1,4 @@
-from files_service import load_folders
-from data_service import create_db_file, create_serie
-from config_service import show_config, load_config
-
+from services.data_service import create_db_file
 def main():
     # Primero se tiene que cargar todo incluido la configuración y las bases de datos
     # Luego se muestran las funciones disponibles y se ejecuta la función seleccionada
@@ -9,7 +6,7 @@ def main():
     # La distribución de la interfaz de usuario será la siguiente:
     # Habrá un grupo de botones que representarán las funciones disponibles, y al seleccionar uno de ellos se mostrará un formulario para que el usuario pueda ingresar los datos necesarios para ejecutar la función seleccionada.
     # También se mostrará un botón para volver al menú principal y otro para salir del programa (arriba a la izquierda y arriba a la derecha respectivamente)
-    
+    create_db_file()
     
     pass
 

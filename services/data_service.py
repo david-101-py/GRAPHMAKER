@@ -1,6 +1,6 @@
 import sqlite3
 from datetime import datetime
-from files_service import load_folders, create_path_if_exists
+from services.files_service import load_folders, create_path_if_exists
 import zlib
 
 
@@ -58,7 +58,6 @@ def give_values_to_serie(serie_id, value):
     conn.close()
 
 #--------------------Manejo de db para datos de series--------------------
-
 def create_serie_db():
     conn = sqlite3.connect(create_db_file())
     cursor = conn.cursor()
@@ -73,7 +72,6 @@ def create_serie_db():
     conn.close()
 
 #--------------------Manejo de db para los grupos de series--------------------
-
 def create_serie_group():
     conn = sqlite3.connect(create_db_file())
     cursor = conn.cursor()
@@ -87,7 +85,6 @@ def create_serie_group():
     conn.close()
 
 #--------------------Funciones grandes finales--------------------
-
 def create_serie(name, group=None):
     group = group if group else None
     create_serie_db()
