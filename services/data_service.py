@@ -2,7 +2,7 @@ import sqlite3
 from datetime import datetime
 from services.files_service import load_folders, create_path_if_exists
 import zlib
-
+from core.tools import today
 
 # --------------------Creación de ids--------------------
 def create_id(name, is_group=False):
@@ -50,7 +50,7 @@ def clear_last_values(serie_id, days_range):
     conn.close()
 
 def give_values_to_serie(serie_id, value):
-    today = datetime.now()
+    today = today()
     conn = sqlite3.connect(create_db_file())
     cursor = conn.cursor()
     cursor.execute(f"INSERT INTO values_db (serie_id, value, date) VALUES (?, ?, ?)", (serie_id, value, today))
@@ -96,3 +96,5 @@ def create_serie(name, group=None):
     conn.close()
     create_values_db()
     return serie_id
+
+def add

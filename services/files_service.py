@@ -1,58 +1,21 @@
 from pathlib import Path
 import datetime
 from services.config_service import load_config
+from core.files_dir import folders
 
-def load_folders():       
+def load_folders():
     try:
-
-        BASE_DIR = Path(__file__).resolve().parent.parent
-
-        FOLDER_EXPORTS = BASE_DIR / "EXPORTS"
-        FOLDER_INPUTS = BASE_DIR / "INPUTS FOLDER"
-        FOLDER_DATA = BASE_DIR / "DATABASE"
-        FOLDER_CONFIG = BASE_DIR / "CONFIG"
-        FOLDER_HISTORY = BASE_DIR / "HISTORY"
-
-        # Crear carpetas base
-        create_path_if_exists(FOLDER_EXPORTS, is_file=False)
-        create_path_if_exists(FOLDER_INPUTS, is_file=False)
-        create_path_if_exists(FOLDER_DATA, is_file=False)
-        create_path_if_exists(FOLDER_CONFIG, is_file=False)
-        create_path_if_exists(FOLDER_HISTORY, is_file=False)
-
-        # Subcarpetas
-        GRAPH_DIR = FOLDER_EXPORTS / "graficas"
-        TABLE_DIR = FOLDER_EXPORTS / "tablas"
-        HTML_GRAPH_DIR = FOLDER_EXPORTS / "graficas_html"
-
-        # Crear subcarpetas
-        create_path_if_exists(GRAPH_DIR, is_file=False)
-        create_path_if_exists(TABLE_DIR, is_file=False)
-        create_path_if_exists(HTML_GRAPH_DIR, is_file=False)
-
-        UNDO_STACK = []
-        error = False
-    except (FileNotFoundError, FileExistsError):
-        print("An error occurred while setting up the necessary folders.")
-        error = True
-    if error == False:
-        folders = {
-            "BASE_DIR": BASE_DIR,
-            "FOLDER_EXPORTS": FOLDER_EXPORTS,
-            "FOLDER_INPUTS": FOLDER_INPUTS,
-            "FOLDER_DATA": FOLDER_DATA,
-            "FOLDER_CONFIG": FOLDER_CONFIG,
-            "GRAPH_DIR": GRAPH_DIR,
-            "TABLE_DIR": TABLE_DIR,
-            "HTML_GRAPH_DIR": HTML_GRAPH_DIR,
-            "UNDO_STACK": UNDO_STACK,
-            "FOLDER_HISTORY": FOLDER_HISTORY 
-        }
+        for folder in folders.values():
+            create_path_if_exists(folder, is_file=False)
         return folders
-    else:
+    except (FileExistsError, FileNotFoundError):
+        print("Ocurrió un problema al instalar el programa.")
         return None
 
+
 def create_path_if_exists(path, is_file=bool):
+    if not isinstance(path, Path):
+        path = Path(path)
     if not path.exists():
         if is_file:
             path.touch(exist_ok=True)
