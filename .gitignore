@@ -1,7 +1,4 @@
 **/__pycache__/
-**/INPUTS*FOLDER/
-**/DATABASE/
-**/EXPORTS/
-**/CONFIG/
-**/AGENTS.md/
-**/HISTORY/
+**/AGENTS.md
+**/TODO.md
+**/git_commands.ps1

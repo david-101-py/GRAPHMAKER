@@ -1,19 +1,10 @@
 from pathlib import Path
 import datetime
 from services.config_service import load_config
-from core.files_dir import folders
-
-def load_folders():
-    try:
-        for folder in folders.values():
-            create_path_if_exists(folder, is_file=False)
-        return folders
-    except (FileExistsError, FileNotFoundError):
-        print("Ocurrió un problema al instalar el programa.")
-        return None
+from core.folders_init import folders
 
 
-def create_path_if_exists(path, is_file=bool):
+def create_path_if_exists(path, is_file=False):
     if not isinstance(path, Path):
         path = Path(path)
     if not path.exists():
@@ -48,14 +39,5 @@ def clear_exports():
             file_path.unlink()
     print(f"Deleted files older than {max_live_time} days.")
 
-def say_all_in_order():
-    folders = load_folders()
-    ok_folders = []
-    for folder in folders:
-        path = folders[folder]
-        ok_folders.append(path)
-    if len(ok_folders) == len(folders):
-        return True
-    return False
 
         
