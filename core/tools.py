@@ -1,4 +1,4 @@
 import datetime
 
 def today():
-    return datetime.now()
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
